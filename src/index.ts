@@ -1,16 +1,15 @@
 import { Hono } from "hono";
 import { withDb } from "./middleware/with-db";
-
-// type Bindings = {
-//   DB: D1Database;
-// };
+import auth from "./routes/auth";
 
 const app = new Hono();
 
 app.use("*", withDb);
 
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
+app.route("/auth", auth);
+
+app.get("/", async (c) => {
+  return c.json({ message: "Pinaka API is running" });
 });
 
 export default app;

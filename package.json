@@ -7,13 +7,16 @@
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
     "db:exec:local": "sh -c 'wrangler d1 execute alimousavi-db --local --file ./src/db/migrations/$1' --",
     "db:exec:remote": "sh -c 'wrangler d1 execute alimousavi-db --remote --file ./src/db/migrations/$1' --"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.7.2",
     "drizzle-orm": "^0.44.4",
     "hono": "^4.9.0",
-    "jose": "^6.0.12"
+    "jose": "^6.0.12",
+    "zod": "^4.0.17"
   },
   "devDependencies": {
     "@libsql/client": "^0.15.10",

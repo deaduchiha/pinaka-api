@@ -6,9 +6,6 @@
   // "compatibility_flags": [
   //   "nodejs_compat"
   // ],
-  // "vars": {
-  //   "MY_VAR": "my-variable"
-  // },
   // "kv_namespaces": [
   //   {
   //     "binding": "MY_KV_NAMESPACE",
@@ -25,7 +22,8 @@
     {
       "binding": "DB",
       "database_name": "pinaka",
-      "database_id": "9491d42c-959e-4ae4-bfd6-e978d10024b0"
+      "database_id": "9491d42c-959e-4ae4-bfd6-e978d10024b0",
+      "migrations_dir": "./src/db/migrations"
     }
   ]
   // "ai": {
