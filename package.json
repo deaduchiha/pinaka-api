@@ -1,0 +1,24 @@
+{
+  "name": "pinaka-api",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:exec:local": "sh -c 'wrangler d1 execute alimousavi-db --local --file ./src/db/migrations/$1' --",
+    "db:exec:remote": "sh -c 'wrangler d1 execute alimousavi-db --remote --file ./src/db/migrations/$1' --"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.44.4",
+    "hono": "^4.9.0",
+    "jose": "^6.0.12"
+  },
+  "devDependencies": {
+    "@libsql/client": "^0.15.10",
+    "@types/node": "^24.2.1",
+    "drizzle-kit": "^0.31.4",
+    "wrangler": "^4.4.0"
+  }
+}
