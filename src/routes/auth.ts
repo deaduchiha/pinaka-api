@@ -7,6 +7,7 @@ import { CookieService } from "../lib/cookie.service";
 import { AuthService } from "../services/auth.service";
 import type { Bindings } from "../types/common";
 import { loginSchema, registerSchema } from "../validations/auth";
+import { ERROR_MESSAGES } from "../constants/error";
 
 const auth = new Hono<{ Bindings: Bindings }>();
 
@@ -31,18 +32,24 @@ auth.post("/signup", zValidator("json", registerSchema), async (c) => {
 
     return ResponseService.success(c, result, 201);
   } catch (error) {
-    console.error("Signup error:", error);
-
     if (error instanceof Error) {
-      if (error.message === "Mobile already registered.") {
+      if (error.message === ERROR_MESSAGES.AUTH.MOBILE_ALREADY_REGISTERED) {
         return ResponseService.error(c, error.message, 409);
       }
-      if (error.message === "Failed to create user") {
-        return ResponseService.error(c, error.message, 500);
+      if (error.message === ERROR_MESSAGES.AUTH.FAILED_TO_CREATE_USER) {
+        return ResponseService.error(
+          c,
+          ERROR_MESSAGES.AUTH.FAILED_TO_CREATE_USER,
+          500
+        );
       }
     }
 
-    return ResponseService.error(c, "Internal server error", 500);
+    return ResponseService.error(
+      c,
+      ERROR_MESSAGES.COMMON.INTERNAL_SERVER_ERROR,
+      500
+    );
   }
 });
 
@@ -65,13 +72,18 @@ auth.post("/login", zValidator("json", loginSchema), async (c) => {
 
     return ResponseService.success(c, result);
   } catch (error) {
-    console.error("Login error:", error);
-
-    if (error instanceof Error && error.message === "Invalid credentials.") {
+    if (
+      error instanceof Error &&
+      error.message === ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS
+    ) {
       return ResponseService.error(c, error.message, 401);
     }
 
-    return ResponseService.error(c, "Internal server error", 500);
+    return ResponseService.error(
+      c,
+      ERROR_MESSAGES.COMMON.INTERNAL_SERVER_ERROR,
+      500
+    );
   }
 });
 
@@ -83,7 +95,7 @@ auth.get("/me", async (c) => {
     const payload = await verifyJwt(c);
 
     if (!payload) {
-      return ResponseService.error(c, "Unauthorized", 401);
+      return ResponseService.error(c, ERROR_MESSAGES.AUTH.UNAUTHORIZED, 401);
     }
 
     const db = c.get("db");
@@ -93,13 +105,18 @@ auth.get("/me", async (c) => {
 
     return ResponseService.success(c, { user });
   } catch (error) {
-    console.error("Me endpoint error:", error);
-
-    if (error instanceof Error && error.message === "User not found") {
+    if (
+      error instanceof Error &&
+      error.message === ERROR_MESSAGES.AUTH.USER_NOT_FOUND
+    ) {
       return ResponseService.error(c, error.message, 404);
     }
 
-    return ResponseService.error(c, "Internal server error", 500);
+    return ResponseService.error(
+      c,
+      ERROR_MESSAGES.COMMON.INTERNAL_SERVER_ERROR,
+      500
+    );
   }
 });
 
